@@ -170,6 +170,16 @@
 				navigator.clipboard.writeText(strAll);
 			}
 
+			function fillIfEmpty(){
+				listJumlah = document.getElementsByName("inputJumlah");
+
+				nilaiJumlah = listJumlah[listJumlah.length-1].value
+
+				if (nilaiJumlah == ""){
+					listJumlah[listJumlah.length-1].value = 0
+				}
+			}
+
 			function nextForm(){
 				target = document.getElementById("myotableform");
 
@@ -227,6 +237,7 @@
 
 			document.getElementById("btn-next").addEventListener("click", function(){
 				window.scrollTo(0, document.body.scrollHeight);
+				fillIfEmpty()
 				nextForm()
 			}, false);
 
