@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="description" content="" />
+		<meta name="author" content="" />
+
+		<title>Pendata Kata Kunci 2</title>
+		<style type="text/css">
+			body {
+				font-family: arial;
+			}
+
+			#allBody {
+				width: 98%;
+				margin: auto;
+			}
+
+			#title {
+				font-size: 16pt;
+				text-align: center;
+			}
+
+			#myoform {
+				margin: auto;
+				width: 90%;
+				font-size: 12pt;
+				text-align: center;
+			}
+			
+			#myotableform {
+				width: 90%;
+				margin: auto;
+			}
+
+			#myotableform td {
+				border-bottom: 1px solid black;
+			}
+
+			#myotableform #col-nomor {
+				width: 10%;
+			}
+
+			.c-col-nomor {
+				width: 50%;
+			}
+
+			.c-col-jumlah {
+				width: 50%;
+			}
+
+			#myotableform #col-jumlah {
+				width: 20%;
+			}
+
+			#btn-next {
+				width: 30%;
+			}
+
+			#outputArea {
+				margin-top: 10px;
+			}
+
+			#footer {
+				background-color: black;
+				color: white;
+				margin-top: 10px;
+				padding: 10px;
+				text-align: center;
+			}
+		</style>
+
+	</head>
+	<body>
+		<div id="allBody">
+			<h1 id="title">
+				Pendata Halaman 1
+			</h1>
+
+			<form id="myoform">
+				<table id="myotableform">
+					<tr>
+						<th id="col-nomor">Nomor</th>
+						<th id="col-jumlah">Jumlah</th>
+						<th id="col-tipe">Error</th>
+						<th id="col-hapus">Hapus</th>
+					</tr>
+					<tr>
+						<td><input type="number" value="0" id="nomor0" name="inputNomor" class="c-col-nomor"></td>
+						<td><input type="number" id="jumlah0" name="inputJumlah" class="c-col-jumlah"></td>
+						<td><input type="checkbox" id="tipe0" name="inputError"></td>
+						<td><button type="button" id="hapus0">(-)</button></td>
+					</tr>
+				</table>
+				<div>
+					<button type="button" id="btn-next">NEXT</button>
+				</div>
+				<div id="outputArea">
+					<textarea id="output"></textarea><br>
+					<button type="button" id="btn-generate">GENERATE</button>
+					<button type="button" id="btn-copy">COPY</button>
+				</div>
+			</form>
+
+			<div id="footer">Copyright © 2024 MYMYO</div>
+		</div>
+		<script type="text/javascript">
+			dataNomor = []
+			dataJumlah = []
+			dataStatus = []
+
+			status = 1
+
+			formNumber = 0
+			preffixInputNomor = "nomor"
+			preffixInputJumlah = "jumlah"
+			preffixBtnTipe = "tipe"
+			preffixBtnHapus = "hapus"
+
+			numberNameForm = "inputNomor"
+			jumlahNameForm = "inputJumlah"
+			errorNameForm = "inputError"
+
+			function getLastNumber(){
+				listNomor = document.getElementsByName("inputNomor");
+
+				return listNomor[listNomor.length-1].value
+			}
+
+			function getListData(){
+				listNomor = document.getElementsByName("inputNomor");
+				listJumlah = document.getElementsByName("inputJumlah");
+				listError = document.getElementsByName("inputError");
+
+				strNomor = ""
+				strJumlah = ""
+				strError = ""
+
+				for (aaa=0; aaa<listNomor.length; aaa++){
+					strNomor += listNomor[aaa].value+",";
+				}
+
+				for (aab=0; aab<listJumlah.length; aab++){
+					strJumlah += listJumlah[aab].value+",";
+				}
+
+				for (aac=0; aac<listError.length; aac++){
+					if (listError[aac].checked){
+						strError += "0,";
+					} else {
+						strError += "1,";
+					}
+				}
+
+				strAll = strNomor+"\n"+strJumlah+"\n"+strError
+
+				return strAll
+			}
+
+			function printData(){
+				target = document.getElementById("output")
+				target.value = getListData();
+			}
+
+			function copyData(){
+				data = getListData();
+
+				navigator.clipboard.writeText(strAll);
+			}
+
+			function nextForm(){
+				target = document.getElementById("myotableform");
+
+				formNumber += 1
+
+				row = document.createElement("tr");
+
+				lastValue = parseInt(getLastNumber())
+
+				lastValue += 1;
+
+				// console.log("last value : "+getLastNumber());
+
+				colNomor = document.createElement("td");
+				inputNomor = document.createElement("input");
+				inputNomor.id = preffixInputNomor+formNumber;
+				inputNomor.name = numberNameForm;
+				inputNomor.type = "number";
+				inputNomor.value = lastValue;
+				inputNomor.setAttribute("class","c-col-nomor");
+				colNomor.appendChild(inputNomor);
+
+				colJumlah = document.createElement("td");
+				inputJumlah = document.createElement("input");
+				inputJumlah.id = preffixInputJumlah+formNumber;
+				inputJumlah.name = jumlahNameForm;
+				inputJumlah.type = "number";
+				inputJumlah.setAttribute("class","c-col-jumlah");
+				colJumlah.appendChild(inputJumlah);
+
+				colError = document.createElement("td");
+				inputError = document.createElement("input");
+				inputError.id = preffixBtnTipe+formNumber;
+				inputError.name = errorNameForm;
+				inputError.type = "checkbox";
+				inputError.setAttribute("class","c-col-jumlah");
+				colError.appendChild(inputError);
+
+				colHapus = document.createElement("td");
+				btnHapus = document.createElement("button");
+				btnHapus.id = preffixBtnTipe+formNumber;
+				btnHapus.type = "button";
+				btnHapus.innerText = "(-)"
+				colHapus.appendChild(btnHapus);
+
+				row.appendChild(colNomor);
+				row.appendChild(colJumlah);
+				row.appendChild(colError);
+				row.appendChild(colHapus);
+
+				target.appendChild(row);
+
+				inputJumlah.focus()
+			}
+
+			document.getElementById("btn-next").addEventListener("click", function(){
+				nextForm()
+			}, false);
+
+			document.getElementById("btn-generate").addEventListener("click", function(){
+				getListData()
+			}, false);
+
+			document.getElementById("btn-copy").addEventListener("click", function(){
+				copyData()
+			}, false);
+		</script>
+	</body>
+</html>
